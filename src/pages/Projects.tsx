@@ -14,6 +14,7 @@ interface Project {
   requiredSkills: string[];
   teamSize: number;
   status: "planning" | "active" | "completed";
+  assigned: boolean,
   managerId: {
     _id: string;
     name: string;
@@ -61,17 +62,28 @@ export default function Projects() {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle>{project.name}</CardTitle>
-                  <Badge
-                    className={
-                      project.status === "completed"
-                        ? "bg-green-100 text-green-800 border-green-200"
-                        : project.status === "active"
-                          ? "bg-blue-100 text-blue-800 border-blue-200"
-                          : "bg-yellow-100 text-yellow-800 border-yellow-200"
-                    }
-                  >
-                    {project.status}
-                  </Badge>
+                  <div className="flex flex-col items-end gap-1">
+                    <Badge
+                      className={
+                        project.status === "completed"
+                          ? "bg-green-100 text-green-800 border-green-200"
+                          : project.status === "active"
+                            ? "bg-blue-100 text-blue-800 border-blue-200"
+                            : "bg-yellow-100 text-yellow-800 border-yellow-200"
+                      }
+                    >
+                      {project.status}
+                    </Badge>
+                    <Badge
+                      className={
+                        project.assigned
+                          ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                          : "bg-red-100 text-red-800 border-red-200"
+                      }
+                    >
+                      {project.assigned ? "Assigned" : "Not Assigned"}
+                    </Badge>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="text-sm space-y-1 text-gray-700">

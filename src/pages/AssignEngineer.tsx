@@ -4,8 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import clsx from "clsx";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -44,7 +50,8 @@ export default function AssignEngineer() {
     { engineerId: string; allocationPercentage: number; role: string }[]
   >([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -59,6 +66,7 @@ export default function AssignEngineer() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const [projRes, engRes] = await Promise.all([
           getAllProjects(),
           getAllEngineers(),
@@ -71,10 +79,16 @@ export default function AssignEngineer() {
           })
         );
 
-        setProjects(projRes.data);
+        const unassigned = projRes.data.filter(
+          (p) => !p.assigned && (p.status === "active" || p.status === "planning")
+        );
+
+        setProjects(unassigned);
         setEngineers(engineersWithCapacity);
       } catch {
         toast.error("Failed to fetch data");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -159,7 +173,7 @@ export default function AssignEngineer() {
     }
 
     try {
-      setLoading(true);
+      setSubmitting(true);
       await Promise.all(
         selectedEngineers.map((eng) =>
           assignEngineer({
@@ -178,9 +192,18 @@ export default function AssignEngineer() {
     } catch (err: any) {
       toast.error(err.message || "Failed to assign engineers");
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+        <span className="ml-2 text-gray-600 text-sm">Loading projects and engineers...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center py-10 px-4">
@@ -197,13 +220,11 @@ export default function AssignEngineer() {
                 className="w-full border rounded-md h-10 px-2 mt-1"
               >
                 <option value="">Select Project</option>
-                {projects
-                  .filter((p) => p.status === "active" || p.status === "planning")
-                  .map((p) => (
-                    <option key={p._id} value={p._id}>
-                      {p.name}
-                    </option>
-                  ))}
+                {projects.map((p) => (
+                  <option key={p._id} value={p._id}>
+                    {p.name}
+                  </option>
+                ))}
               </select>
               {errors.projectId && (
                 <p className="text-sm text-red-500">{errors.projectId.message}</p>
@@ -251,7 +272,7 @@ export default function AssignEngineer() {
                         )}
                         onClick={(e) => {
                           const tag = (e.target as HTMLElement).tagName;
-                          if (tag === "INPUT" || tag === "LABEL" || tag === "BUTTON" || tag === "TEXTAREA") return;
+                          if (["INPUT", "LABEL", "BUTTON", "TEXTAREA"].includes(tag)) return;
                           handleEngineerToggle(eng._id);
                         }}
                       >
@@ -326,8 +347,14 @@ export default function AssignEngineer() {
               </div>
             )}
 
-            <Button type="submit" disabled={loading} className="w-full">
-              {loading ? "Allocating..." : "Allocate Engineers"}
+            <Button type="submit" disabled={submitting} className="w-full">
+              {submitting ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="animate-spin h-4 w-4" /> Allocating...
+                </span>
+              ) : (
+                "Allocate Engineers"
+              )}
             </Button>
           </form>
         </CardContent>

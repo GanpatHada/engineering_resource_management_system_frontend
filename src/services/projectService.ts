@@ -12,6 +12,7 @@ export interface ProjectPayload {
 
 export interface Project extends ProjectPayload {
   _id: string;
+  assigned:boolean,
   createdAt: string;
   updatedAt: string;
    managerId: {
