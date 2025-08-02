@@ -1,69 +1,110 @@
-# React + TypeScript + Vite
+# 🎯 Engineering Resource Management System – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for the Engineering Resource Management System. It allows managers to create projects, assign engineers, and view utilization dashboards, while engineers can track their assignments and availability.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 🚀 Live Demo & Documentation
 
-## Expanding the ESLint configuration
+<div style="border: 1px solid #ccc; padding: 16px; border-radius: 8px; background-color: #000000ff;">
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+🔗 <strong>Frontend Live URL:</strong>  
+<a href="https://ermsgeeky.vercel.app" target="_blank">https://ermsgeeky.vercel.app</a>
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+🟢 <strong>Backend API (Hosted on Render):</strong><br>
+<a href="https://engineering-resource-management-system-crbg.onrender.com" target="_blank">https://engineering-resource-management-system-crbg.onrender.com</a>
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+📬 <strong>Postman API Collection:</strong>  
+<a href="https://documenter.getpostman.com/view/19675500/2sB3BAMCn8" target="_blank">https://documenter.getpostman.com/view/19675500/2sB3BAMCn8</a>
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+</div>
+
+
+--- 
+### 🔐Test Credentials
+👨‍💼 Manager Login:  
+- ✉ <code>alice.manager@gmail.com</code>  
+- 🔑 <code>manager123</code>  
+
+👨‍💻 Engineer Login:  
+- ✉ <code>dev@example.com</code>  
+- 🔑 <code>secret123</code>  
+
+👩‍💻 Engineer Login:  
+- ✉ <code>john.doe1@gmail.com</code>  
+- 🔑 <code>password123</code>  
+
+👩‍💻 Engineer Login:  
+- ✉ <code>jane.smith2@gmail.com</code>  
+- 🔑 <code>password123</code> 
+
+
+
+---
+
+## ⚙️ Tech Stack
+
+- **React** with **TypeScript**
+- **Tailwind CSS** with **ShadCN UI**
+- **React Hook Form** for form handling
+- **React Router DOM** for routing
+- **Context API / Zustand** for state management
+- **Axios / Fetch** for API calls
+
+---
+
+## 📁 Folder Structure
+
+````bash
+project-root/
+├── public/                 # Static files (index.html, favicon, etc.)
+├── src/
+│   ├── assets/             # Images, logos, icons
+│   ├── components/         # Reusable UI components
+│   ├── context/            # Global state (Context API or Zustand)
+│   ├── hooks/              # Custom hooks
+│   ├── pages/              # Route-based pages
+│   ├── routes/             # React Router config
+│   ├── services/           # API call logic
+│   ├── styles/             # Tailwind config or custom styles
+│   └── utils/              # Helper functions
+├── .env                    # Environment variables
+├── package.json            # Project metadata
+└── vite.config.ts          # Vite config
+````
+
+
+
+## 🧪 Run Locally
+
+Follow the steps below to set up and run the backend locally:
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/GanpatHada/engineering_resource_management_system_frontend.git
+cd engineering_resource_management_system_frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+### 3. Create `.env` file
+
+Create a `.env` file in the root folder and add the following:
+
+```env
+VITE_API_URL=http://localhost:8000/api
+```
+
+
+### 4. Start the server
+
+```bash
+npm run dev
+```
+
+> By default, the server will run on `http://localhost:5173`
